@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+			 xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"		 
+			 xmlns:core="clr-namespace:AzureBlobFilesApp"		 			 
+			 xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"		 			 
+			 BackgroundColor="White"
+			 x:DataType="core:MainViewModel"
+             x:Class="AzureBlobFilesApp.MainPage">
+
+	<Grid RowDefinitions="Auto, *">
+		<StackLayout Orientation="Horizontal">
+			<ActivityIndicator Color="OrangeRed" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" WidthRequest="30" HeightRequest="30"/>
+			<Label Text="{Binding BusyMessage}" TextColor="DarkSlateGray" FontSize="18" VerticalOptions="Center"/>
+		</StackLayout>
+		<tabView:SfTabView x:Name="tabView"  Grid.Row="1">
+			<tabView:SfTabView.Items>
+				<tabView:SfTabItem Header="Images">
+					<tabView:SfTabItem.Content>
+						<Grid>
+							<listView:SfListView ItemsSource="{Binding Images}" >
+								<listView:SfListView.ItemTemplate>
+									<DataTemplate x:DataType="storage:CloudFile">
+										<Grid>
+											<Label Text="{Binding Name}" />
+										</Grid>
+									</DataTemplate>
+								</listView:SfListView.ItemTemplate>
+							</listView:SfListView>
+							<Button Text="Add" 
+									WidthRequest="54" 
+									HeightRequest="54" 
+									BackgroundColor="OrangeRed" 
+									CornerRadius="25" 
+									Margin="16"
+									TextColor="White"
+									Command="{Binding AddImageCommand}" 
+									HorizontalOptions="End" 
+									VerticalOptions="End"/>
+						</Grid>
+					</tabView:SfTabItem.Content>
+				</tabView:SfTabItem>
+
+				<tabView:SfTabItem Header="Documents">
+					<tabView:SfTabItem.Content>
+						<Grid>
+							<listView:SfListView ItemsSource="{Binding Documents}" >
+								<listView:SfListView.ItemTemplate>
+									<DataTemplate x:DataType="storage:CloudFile">
+										<Grid>
+											<Label Text="{Binding Name}" />
+										</Grid>
+									</DataTemplate>
+								</listView:SfListView.ItemTemplate>
+							</listView:SfListView>
+							<Button Text="Add" 
+									WidthRequest="54" 
+									HeightRequest="54" 
+									BackgroundColor="OrangeRed" 
+									CornerRadius="27" 
+									Margin="16"
+									TextColor="White"
+									Command="{Binding AddDocumentCommand}" 
+									HorizontalOptions="End" 
+									VerticalOptions="End"/>
+						</Grid>
+					</tabView:SfTabItem.Content>
+				</tabView:SfTabItem>
+			</tabView:SfTabView.Items>
+		</tabView:SfTabView>
+	</Grid>
+
+</ContentPage>

@@ -1,0 +1,12 @@
+﻿
+Syncfusion MAUI TabView: https://help.syncfusion.com/maui/tabview/overview
+
+MAUI DI: https://www.youtube.com/watch?v=xx1mve2AQr4
+DotNet Podcast MAUI App: https://github.com/microsoft/dotnet-podcasts?WT.mc_id=friends-0000-jamont
+
+//TODO:
+- MAUI File Picker to pic image / pdf docs
+- upload to storage
+- fetch list of files
+- open a specific file
+- delete from storage
