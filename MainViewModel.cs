@@ -64,14 +64,28 @@ namespace AzureBlobFilesApp
 		private async Task LoadImagesAsync()
 		{
 			Images = new ObservableCollection<CloudFile>();
-			var imageNames = await _storageService.ListFilesAsync(CloudFileType.Image);
+			var imagesResult = await _storageService.ListFilesAsync(CloudFileType.Image);
+			if (imagesResult.IsValid())
+			{
+				foreach (var file in imagesResult.Files)
+				{
+					Images.Add(file);
+				}
+			}
 		}
 
 		[RelayCommand]
 		private async Task LoadDocumentsAsync()
 		{
 			Documents = new ObservableCollection<CloudFile>();
-			var documentNames = await _storageService.ListFilesAsync(CloudFileType.Document);
+			var documentsResult = await _storageService.ListFilesAsync(CloudFileType.Document);
+			if (documentsResult.IsValid())
+			{
+				foreach (var document in documentsResult.Files)
+				{
+					Documents.Add(document);
+				}
+			}
 		}
 
 		[RelayCommand]

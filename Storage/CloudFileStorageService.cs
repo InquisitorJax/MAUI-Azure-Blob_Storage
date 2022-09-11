@@ -13,7 +13,7 @@ namespace AzureBlobFilesApp.Storage
 
 		Task<CloudFileDeleteResult> DeleteFileAsync(CloudFileType fileType, string fileName);
 
-		Task<CloudFileListResult> ListFilesAsync(CloudFileType fileType);
+		Task<CloudFilesResult> ListFilesAsync(CloudFileType fileType);
 	}
 
 	public class CloudFileStorageService : ICloudFileStorageService
@@ -111,7 +111,7 @@ namespace AzureBlobFilesApp.Storage
 			return DownloadBlobAsync(containerName, fileName);
 		}
 
-		public Task<CloudFileListResult> ListFilesAsync(CloudFileType fileType)
+		public Task<CloudFilesResult> ListFilesAsync(CloudFileType fileType)
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
 			return ListBlobsAsync(containerName);
@@ -152,9 +152,9 @@ namespace AzureBlobFilesApp.Storage
 			return result;
 		}
 
-		private async Task<CloudFileListResult> ListBlobsAsync(string containerName)
+		private async Task<CloudFilesResult> ListBlobsAsync(string containerName)
 		{
-			var result = new CloudFileListResult();
+			var result = new CloudFilesResult();
 			try
 			{
 				var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
@@ -163,14 +163,20 @@ namespace AzureBlobFilesApp.Storage
 
                 await foreach (var blobItem in blobItems)
 				{
-					result.FileNames.Add(blobItem.Name);
+					var cloudFile = new CloudFile
+					{
+						Name = blobItem.Name,
+						Size = blobItem.Properties.ContentLength ?? 0,
+						//Url = blobItem.ur
+					};
+					result.Files.Add(cloudFile);
 				}
-                System.Diagnostics.Debug.WriteLine($"===================> Found {result.FileNames.Count} files in the {containerName} container");
+                System.Diagnostics.Debug.WriteLine($"===================> Found {result.Files.Count} files in the {containerName} container");
 
             }
             catch (Exception ex)
 			{
-				System.Diagnostics.Debug.WriteLine($"===================> Could not upload blob :(");
+				System.Diagnostics.Debug.WriteLine($"===================> Could not list blobs for container {containerName} :(");
 				result.Fail(ex.Message);
 			}
 
@@ -204,17 +210,11 @@ namespace AzureBlobFilesApp.Storage
 
 	public class CloudFilesResult : CommandResult
 	{
-		public List<CloudFile> Files { get; set; }
-	}
-
-	public class CloudFileListResult : CommandResult
-	{
-		public List<string> FileNames { get; set; } = new List<string>();
+		public List<CloudFile> Files { get; set; } = new List<CloudFile>();
 	}
 
 	public class CloudFileDeleteResult : CommandResult
 	{
 		public bool Existed { get; set; }
 	}
-	
 }

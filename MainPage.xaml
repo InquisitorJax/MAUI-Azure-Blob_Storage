@@ -17,7 +17,7 @@
 				<tabView:SfTabItem Header="Images">
 					<tabView:SfTabItem.Content>
 						<Grid>
-							<listView:SfListView ItemsSource="{Binding Images}" >
+							<listView:SfListView ItemsSource="{Binding Images}" AutoFitMode="DynamicHeight">
 								<listView:SfListView.ItemTemplate>
 									<DataTemplate x:DataType="storage:CloudFile">
 										<Grid>
@@ -50,16 +50,15 @@
 		</tabView:SfTabView>
 
 		<Button Text="Add"
-		 
-									WidthRequest="54" 
-									HeightRequest="54" 
-									BackgroundColor="OrangeRed" 
-									CornerRadius="27" 
-									Margin="16"
-									TextColor="White"
-									Command="{Binding AddCloudFileCommand}" 
-									HorizontalOptions="End" 
-									VerticalOptions="End"/>
+				WidthRequest="54" 
+				HeightRequest="54" 
+				BackgroundColor="OrangeRed" 
+				CornerRadius="27" 
+				Margin="16"
+				TextColor="White"
+				Command="{Binding AddCloudFileCommand}" 
+				HorizontalOptions="End" 
+				VerticalOptions="End"/>
 
 		<Grid HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Black" Opacity="0.3" IsVisible="{Binding IsBusy}"/>
 		<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="8" VerticalOptions="Center" IsVisible="{Binding IsBusy}">
