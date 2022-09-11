@@ -102,6 +102,30 @@ namespace AzureBlobFilesApp
 			}
 		}
 
+		[RelayCommand]
+		private async Task DeleteCloudFileAsync(CloudFile file)
+		{
+			IsBusy = true;
+			BusyMessage = $"Deleting {file.Name}";
+			try
+			{
+				var deleteResult =  await _storageService.DeleteFileAsync(file.FileType, file.Name);
+				if (deleteResult.IsValid())
+				{
+					if (file.FileType == CloudFileType.Document)
+						Documents.Remove(file);
+					else
+						Images.Remove(file);
+
+				}
+            }
+            finally
+			{
+				IsBusy = false;
+				BusyMessage = String.Empty;
+			}
+		}
+
 		private async Task AddImageAsync()
 		{
 			IsBusy = true;

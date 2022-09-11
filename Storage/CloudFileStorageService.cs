@@ -114,7 +114,7 @@ namespace AzureBlobFilesApp.Storage
 		public Task<CloudFilesResult> ListFilesAsync(CloudFileType fileType)
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
-			return ListBlobsAsync(containerName);
+			return ListBlobsAsync(containerName, fileType);
 		}
 
 		private async Task<CloudFileResult> DownloadBlobAsync(string containerName, string blobName)
@@ -152,7 +152,7 @@ namespace AzureBlobFilesApp.Storage
 			return result;
 		}
 
-		private async Task<CloudFilesResult> ListBlobsAsync(string containerName)
+		private async Task<CloudFilesResult> ListBlobsAsync(string containerName, CloudFileType fileType)
 		{
 			var result = new CloudFilesResult();
 			try
@@ -167,6 +167,7 @@ namespace AzureBlobFilesApp.Storage
 					{
 						Name = blobItem.Name,
 						Size = blobItem.Properties.ContentLength ?? 0,
+						FileType = fileType
 						//Url = blobItem.ur
 					};
 					result.Files.Add(cloudFile);
@@ -195,6 +196,8 @@ namespace AzureBlobFilesApp.Storage
 		public byte[] Content { get; set; }
 
 		public DateTimeOffset LastModified { get; set; }
+
+		public CloudFileType FileType { get; set; }
 	}
 
 	public enum CloudFileType
