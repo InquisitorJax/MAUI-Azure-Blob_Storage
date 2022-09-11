@@ -109,7 +109,7 @@ namespace AzureBlobFilesApp
 
 			try
 			{
-				string fileName = ImageResourceName + Images.Count;
+				string fileName = ImageResourceName.Replace(".png", $"{Images.Count + 1}.png");
 				ImageErrorMessage = string.Empty;
 
 				LoadImageResource();
@@ -140,7 +140,7 @@ namespace AzureBlobFilesApp
 
 			try
 			{
-				string fileName = DocumentResourceName + Documents.Count;
+				string fileName = DocumentResourceName.Replace(".pdf", $"{Documents.Count + 1}.pdf");
 				ImageErrorMessage = string.Empty;
 
 				LoadDocumentResource();

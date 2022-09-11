@@ -11,39 +11,33 @@
              x:Class="AzureBlobFilesApp.MainPage">
 
 	<Grid >
+		<Grid.Resources>
+			<DataTemplate x:Key="CouldFileTemplate"  x:DataType="storage:CloudFile">
 
+				<Grid>
+											<Label Text="{Binding Name}" Margin="8"/>
+										</Grid>
+			</DataTemplate>
+
+		</Grid.Resources>
 		<tabView:SfTabView x:Name="tabView" SelectedIndex="{Binding SelectedIndex}">
 			<tabView:SfTabView.Items>
 				<tabView:SfTabItem Header="Images">
 					<tabView:SfTabItem.Content>
 						<Grid>
-							<listView:SfListView ItemsSource="{Binding Images}" AutoFitMode="DynamicHeight">
-								<listView:SfListView.ItemTemplate>
-									<DataTemplate x:DataType="storage:CloudFile">
-										<Grid>
-											<Label Text="{Binding Name}" />
-										</Grid>
-									</DataTemplate>
-								</listView:SfListView.ItemTemplate>
-							</listView:SfListView>
-							
-						</Grid>
+							<listView:SfListView ItemsSource="{Binding Images}"
+								AutoFitMode="DynamicHeight"
+								ItemTemplate="{StaticResource CouldFileTemplate}"/>
+                        </Grid>
 					</tabView:SfTabItem.Content>
 				</tabView:SfTabItem>
 
 				<tabView:SfTabItem Header="Documents">
 					<tabView:SfTabItem.Content>
 						<Grid>
-							<listView:SfListView ItemsSource="{Binding Documents}" >
-								<listView:SfListView.ItemTemplate>
-									<DataTemplate x:DataType="storage:CloudFile">
-										<Grid>
-											<Label Text="{Binding Name}" />
-										</Grid>
-									</DataTemplate>
-								</listView:SfListView.ItemTemplate>
-							</listView:SfListView>
-						</Grid>
+							<listView:SfListView ItemsSource="{Binding Documents}"
+								ItemTemplate="{StaticResource CouldFileTemplate}"/>
+                        </Grid>
 					</tabView:SfTabItem.Content>
 				</tabView:SfTabItem>
 			</tabView:SfTabView.Items>
