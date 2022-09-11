@@ -26,6 +26,9 @@ namespace AzureBlobFilesApp
 		private bool _isBusy;
 
 		[ObservableProperty]
+		private int _selectedIndex;
+
+		[ObservableProperty]
 		private ObservableCollection<CloudFile> _images;
 
 		[ObservableProperty]
@@ -72,6 +75,19 @@ namespace AzureBlobFilesApp
 		}
 
 		[RelayCommand]
+		private async Task AddCloudFileAsync()
+		{
+			switch (SelectedIndex)
+			{
+				case 0:
+					await AddImageAsync();
+					break;
+				default:
+					await AddDocumentAsync();
+					break;
+			}
+		}
+
 		private async Task AddImageAsync()
 		{
 			IsBusy = true;
@@ -103,7 +119,6 @@ namespace AzureBlobFilesApp
 
 		}
 
-		[RelayCommand]
 		private async Task AddDocumentAsync()
 		{
 			IsBusy = true;

@@ -4,17 +4,15 @@
 			 xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
 			 xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"		 
 			 xmlns:core="clr-namespace:AzureBlobFilesApp"		 			 
-			 xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"		 			 
+			 xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"
+			 Shell.NavBarIsVisible="True"
 			 BackgroundColor="White"
 			 x:DataType="core:MainViewModel"
              x:Class="AzureBlobFilesApp.MainPage">
 
-	<Grid RowDefinitions="Auto, *">
-		<StackLayout Orientation="Horizontal">
-			<ActivityIndicator Color="OrangeRed" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" WidthRequest="30" HeightRequest="30"/>
-			<Label Text="{Binding BusyMessage}" TextColor="DarkSlateGray" FontSize="18" VerticalOptions="Center"/>
-		</StackLayout>
-		<tabView:SfTabView x:Name="tabView"  Grid.Row="1">
+	<Grid >
+
+		<tabView:SfTabView x:Name="tabView" SelectedIndex="{Binding SelectedIndex}">
 			<tabView:SfTabView.Items>
 				<tabView:SfTabItem Header="Images">
 					<tabView:SfTabItem.Content>
@@ -28,16 +26,7 @@
 									</DataTemplate>
 								</listView:SfListView.ItemTemplate>
 							</listView:SfListView>
-							<Button Text="Add" 
-									WidthRequest="54" 
-									HeightRequest="54" 
-									BackgroundColor="OrangeRed" 
-									CornerRadius="25" 
-									Margin="16"
-									TextColor="White"
-									Command="{Binding AddImageCommand}" 
-									HorizontalOptions="End" 
-									VerticalOptions="End"/>
+							
 						</Grid>
 					</tabView:SfTabItem.Content>
 				</tabView:SfTabItem>
@@ -54,21 +43,30 @@
 									</DataTemplate>
 								</listView:SfListView.ItemTemplate>
 							</listView:SfListView>
-							<Button Text="Add" 
+						</Grid>
+					</tabView:SfTabItem.Content>
+				</tabView:SfTabItem>
+			</tabView:SfTabView.Items>
+		</tabView:SfTabView>
+
+		<Button Text="Add"
+		 
 									WidthRequest="54" 
 									HeightRequest="54" 
 									BackgroundColor="OrangeRed" 
 									CornerRadius="27" 
 									Margin="16"
 									TextColor="White"
-									Command="{Binding AddDocumentCommand}" 
+									Command="{Binding AddCloudFileCommand}" 
 									HorizontalOptions="End" 
 									VerticalOptions="End"/>
-						</Grid>
-					</tabView:SfTabItem.Content>
-				</tabView:SfTabItem>
-			</tabView:SfTabView.Items>
-		</tabView:SfTabView>
+
+		<Grid HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Black" Opacity="0.3" IsVisible="{Binding IsBusy}"/>
+		<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="8" VerticalOptions="Center" IsVisible="{Binding IsBusy}">
+			<ActivityIndicator Color="OrangeRed" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" WidthRequest="30" HeightRequest="30"/>
+			<Label Text="{Binding BusyMessage}" TextColor="DarkSlateGray" FontSize="18" VerticalOptions="Center"/>
+		</StackLayout>
+
 	</Grid>
 
 </ContentPage>

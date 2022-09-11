@@ -161,12 +161,14 @@ namespace AzureBlobFilesApp.Storage
 
 				var blobItems = containerClient.GetBlobsAsync();
 
-				await foreach (var blobItem in blobItems)
+                await foreach (var blobItem in blobItems)
 				{
 					result.FileNames.Add(blobItem.Name);
 				}
-			}
-			catch (Exception ex)
+                System.Diagnostics.Debug.WriteLine($"===================> Found {result.FileNames.Count} files in the {containerName} container");
+
+            }
+            catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine($"===================> Could not upload blob :(");
 				result.Fail(ex.Message);
