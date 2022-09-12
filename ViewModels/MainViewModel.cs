@@ -128,6 +128,12 @@ namespace AzureBlobFilesApp.ViewModels
 			}
 		}
 
+		[RelayCommand]
+		private Task OpenFileAsync(CloudFile file)
+		{
+			return Task.CompletedTask;
+		}
+
 		private async Task AddImageAsync()
 		{
 			IsBusy = true;
