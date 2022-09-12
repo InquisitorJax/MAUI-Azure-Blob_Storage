@@ -7,7 +7,11 @@ namespace AzureBlobFilesApp.Storage
 {
 	public interface ICloudFileStorageService
 	{
-		Task<CloudFileResult> UploadFileAsync(CloudFileType fileType, string fileName, byte[] file);
+		Task<CloudFileResult> UploadFileAsync(CloudFileType fileType, 
+			string fileName, 
+			byte[] file, 
+			IProgress<long> progressHandler = null,
+			CancellationToken cancellationToken = default);
 
 		Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName);
 
@@ -37,7 +41,11 @@ namespace AzureBlobFilesApp.Storage
 			return blobClient;
 		}
 
-		public async Task<CloudFileResult> UploadFileAsync(CloudFileType fileType, string fileName, byte[] file)
+		public async Task<CloudFileResult> UploadFileAsync(CloudFileType fileType, 
+			string fileName, 
+			byte[] file,
+			IProgress<long> progressHandler = null,
+			CancellationToken cancellationToken = default)
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
 			var result = await UploadBlobAsync(containerName, fileName, file);
@@ -75,7 +83,11 @@ namespace AzureBlobFilesApp.Storage
 			return result;
 		}
 
-		private async Task<CloudFileResult> UploadBlobAsync(string containerName, string blobName, byte[] blob)
+		private async Task<CloudFileResult> UploadBlobAsync(string containerName, 
+			string blobName, 
+			byte[] blob, 
+			IProgress<long> progressHandler = null,
+			CancellationToken cancellationToken = default)
 		{
 			var result = new CloudFileResult();
 			System.Diagnostics.Debug.WriteLine($"===================> Uploading blob {blobName}.");
@@ -86,9 +98,14 @@ namespace AzureBlobFilesApp.Storage
 				
 				await DeleteBlobAsync(containerName, blobName, blobClient);
 
+				var uploadOptions = new BlobUploadOptions
+				{
+					ProgressHandler = progressHandler
+				};
+
 				using (var ms = blob.AsMemoryStream())
 				{
-					var info = await blobClient.UploadAsync(ms);
+					var info = await blobClient.UploadAsync(ms, uploadOptions, cancellationToken);
 					result.File.Url = blobClient.Uri.AbsoluteUri;
 					result.File.Name = blobName;
 					result.File.Size = blob.Length;

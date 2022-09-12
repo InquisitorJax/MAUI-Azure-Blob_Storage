@@ -1,7 +1,6 @@
 ﻿using AzureBlobFilesApp.Storage;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Syncfusion.Maui.Core.Hosting;
-using Syncfusion.Maui.ListView.Hosting;
 
 namespace AzureBlobFilesApp.Core
 {
@@ -26,11 +25,9 @@ namespace AzureBlobFilesApp.Core
 		public static MauiAppBuilder ConfigureSyncfusion(this MauiAppBuilder builder)
 		{
 			builder.ConfigureSyncfusionCore();
-			builder.ConfigureSyncfusionListView();
 
 			return builder;
 		}
-
 
 	}
 }

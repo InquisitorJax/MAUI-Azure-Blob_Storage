@@ -1,22 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage x:Class="AzureBlobFilesApp.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-			 xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"		 
-			 xmlns:core="clr-namespace:AzureBlobFilesApp"		 			 
-			 xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"
-			 Shell.NavBarIsVisible="True"
-			 BackgroundColor="White"
-			 x:DataType="core:MainViewModel"
-             x:Class="AzureBlobFilesApp.MainPage">
+             xmlns:core="clr-namespace:AzureBlobFilesApp"
+             xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             x:Name="_mainPage"
+             x:DataType="core:MainViewModel"
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="True">
 
-	<Grid >
+	<Grid>
 		<Grid.Resources>
-			<DataTemplate x:Key="CouldFileTemplate"  x:DataType="storage:CloudFile">
-
-				<Grid>
-											<Label Text="{Binding Name}" Margin="8"/>
-										</Grid>
+			<DataTemplate x:Key="CloudFileTemplate" x:DataType="storage:CloudFile">
+				<Frame Margin="8"
+				       BackgroundColor="#FFFFFF"
+				       HasShadow="False">
+					<Grid ColumnDefinitions="*, Auto">
+						<Label Margin="8"
+						       Text="{Binding Name}"
+						       TextColor="Black" />
+						<Button Grid.Column="1"
+						        Command="{Binding BindingContext.DeleteCloudFileCommand, Source={x:Reference _mainPage}}"
+						        CommandParameter="{Binding .}"
+						        Text="Delete" />
+					</Grid>
+				</Frame>
 			</DataTemplate>
 
 		</Grid.Resources>
@@ -25,40 +34,55 @@
 				<tabView:SfTabItem Header="Images">
 					<tabView:SfTabItem.Content>
 						<Grid>
-							<listView:SfListView ItemsSource="{Binding Images}"
-								AutoFitMode="DynamicHeight"
-								ItemTemplate="{StaticResource CouldFileTemplate}"/>
-                        </Grid>
+							<CollectionView ItemTemplate="{StaticResource CloudFileTemplate}" ItemsSource="{Binding Images}" />
+						</Grid>
 					</tabView:SfTabItem.Content>
 				</tabView:SfTabItem>
-
 				<tabView:SfTabItem Header="Documents">
 					<tabView:SfTabItem.Content>
 						<Grid>
-							<listView:SfListView ItemsSource="{Binding Documents}"
-								ItemTemplate="{StaticResource CouldFileTemplate}"/>
-                        </Grid>
+							<CollectionView ItemTemplate="{StaticResource CloudFileTemplate}" ItemsSource="{Binding Documents}" />
+						</Grid>
 					</tabView:SfTabItem.Content>
 				</tabView:SfTabItem>
 			</tabView:SfTabView.Items>
 		</tabView:SfTabView>
 
-		<Button Text="Add"
-				WidthRequest="54" 
-				HeightRequest="54" 
-				BackgroundColor="OrangeRed" 
-				CornerRadius="27" 
-				Margin="16"
-				TextColor="White"
-				Command="{Binding AddCloudFileCommand}" 
-				HorizontalOptions="End" 
-				VerticalOptions="End"/>
+		<Button Margin="16"
+		        BackgroundColor="OrangeRed"
+		        Command="{Binding AddCloudFileCommand}"
+		        CornerRadius="27"
+		        HeightRequest="54"
+		        HorizontalOptions="End"
+		        Text="Add"
+		        TextColor="White"
+		        VerticalOptions="End"
+		        WidthRequest="54" />
 
-		<Grid HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Black" Opacity="0.3" IsVisible="{Binding IsBusy}"/>
-		<StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="8" VerticalOptions="Center" IsVisible="{Binding IsBusy}">
-			<ActivityIndicator Color="OrangeRed" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" WidthRequest="30" HeightRequest="30"/>
-			<Label Text="{Binding BusyMessage}" TextColor="DarkSlateGray" FontSize="18" VerticalOptions="Center"/>
-		</StackLayout>
+		<Grid BackgroundColor="Black"
+		      HorizontalOptions="Fill"
+		      IsVisible="{Binding IsBusy}"
+		      Opacity="0.3"
+		      VerticalOptions="Fill" />
+		<Frame BackgroundColor="White"
+		       CornerRadius="8"
+		       HasShadow="False"
+		       HorizontalOptions="Center"
+		       IsVisible="{Binding IsBusy}"
+		       VerticalOptions="Center">
+			<StackLayout Margin="8" Orientation="Horizontal">
+				<ActivityIndicator Margin="0,0,16,0"
+				                   HeightRequest="30"
+				                   IsRunning="{Binding IsBusy}"
+				                   IsVisible="{Binding IsBusy}"
+				                   WidthRequest="30"
+				                   Color="OrangeRed" />
+				<Label FontSize="18"
+				       Text="{Binding BusyMessage}"
+				       TextColor="DarkSlateGray"
+				       VerticalOptions="Center" />
+			</StackLayout>
+		</Frame>
 
 	</Grid>
 

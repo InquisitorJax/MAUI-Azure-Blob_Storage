@@ -50,8 +50,7 @@ namespace AzureBlobFilesApp
 
 			try
 			{
-				await LoadImagesAsync();
-				await LoadDocumentsAsync();
+				await LoadFilesAsync();
 			}
 			finally
 			{
@@ -60,18 +59,25 @@ namespace AzureBlobFilesApp
 			}
 		}
 
+		private async Task LoadFilesAsync()
+		{
+			await LoadImagesAsync();
+			await LoadDocumentsAsync();
+		}
+
 		[RelayCommand]
 		private async Task LoadImagesAsync()
 		{
-			Images = new ObservableCollection<CloudFile>();
+			var images = new ObservableCollection<CloudFile>();
 			var imagesResult = await _storageService.ListFilesAsync(CloudFileType.Image);
 			if (imagesResult.IsValid())
 			{
 				foreach (var file in imagesResult.Files)
 				{
-					Images.Add(file);
+					images.Add(file);
 				}
 			}
+			Images = images;
 		}
 
 		[RelayCommand]
@@ -112,11 +118,7 @@ namespace AzureBlobFilesApp
 				var deleteResult =  await _storageService.DeleteFileAsync(file.FileType, file.Name);
 				if (deleteResult.IsValid())
 				{
-					if (file.FileType == CloudFileType.Document)
-						Documents.Remove(file);
-					else
-						Images.Remove(file);
-
+					await LoadFilesAsync();
 				}
             }
             finally
