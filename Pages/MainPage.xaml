@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage x:Class="AzureBlobFilesApp.MainPage"
+<ContentPage x:Class="AzureBlobFilesApp.Pages.MainPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:core="clr-namespace:AzureBlobFilesApp"
              xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:viewmodels="clr-namespace:AzureBlobFilesApp.ViewModels"
              x:Name="_mainPage"
-             x:DataType="core:MainViewModel"
+             x:DataType="viewmodels:MainViewModel"
              BackgroundColor="White"
              Shell.NavBarIsVisible="True">
 

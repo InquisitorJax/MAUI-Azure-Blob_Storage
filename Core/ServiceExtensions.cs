@@ -1,4 +1,6 @@
-﻿using AzureBlobFilesApp.Storage;
+﻿using AzureBlobFilesApp.Pages;
+using AzureBlobFilesApp.Storage;
+using AzureBlobFilesApp.ViewModels;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Syncfusion.Maui.Core.Hosting;
 

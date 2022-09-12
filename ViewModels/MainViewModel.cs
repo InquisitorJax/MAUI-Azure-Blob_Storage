@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 
-namespace AzureBlobFilesApp
+namespace AzureBlobFilesApp.ViewModels
 {
 	[ObservableObject]
 	public partial class MainViewModel

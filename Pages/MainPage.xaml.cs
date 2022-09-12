@@ -1,6 +1,6 @@
-﻿using AzureBlobFilesApp.Core;
+﻿using AzureBlobFilesApp.ViewModels;
 
-namespace AzureBlobFilesApp;
+namespace AzureBlobFilesApp.Pages;
 
 public partial class MainPage : ContentPage
 {
