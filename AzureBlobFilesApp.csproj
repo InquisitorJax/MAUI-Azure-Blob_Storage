@@ -70,4 +70,10 @@
 	  <PackageReference Include="Wibci.Xamarin.Images" Version="2.0.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Pages\CloudFilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

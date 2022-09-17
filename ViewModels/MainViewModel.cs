@@ -1,5 +1,7 @@
 ﻿using AzureBlobFilesApp.Extensions;
+using AzureBlobFilesApp.Pages;
 using AzureBlobFilesApp.Storage;
+using Bumptech.Glide.Signature;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -129,9 +131,13 @@ namespace AzureBlobFilesApp.ViewModels
 		}
 
 		[RelayCommand]
-		private Task OpenFileAsync(CloudFile file)
+		private async Task OpenFileAsync(CloudFile file)
 		{
-			return Task.CompletedTask;
+			await Shell.Current.GoToAsync($"{nameof(CloudFilePage)}", 
+				new Dictionary<string, object>
+				{
+					[nameof(CloudFile)] = file 
+				});
 		}
 
 		private async Task AddImageAsync()
