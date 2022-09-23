@@ -16,9 +16,11 @@
 				<Grid Padding="8">
 					<Frame BackgroundColor="#FFFFFF" HasShadow="False">
 						<Grid ColumnDefinitions="*, Auto">
+
 							<Label Margin="8"
 							       Text="{Binding Name}"
-							       TextColor="Black" />
+							       TextColor="Black"
+							       VerticalOptions="Center" />
 							<StackLayout Grid.Column="1" Orientation="{OnIdiom Phone='Horizontal', Default='Vertical'}">
 								<Button Margin="0,0,16,0"
 								        Command="{Binding BindingContext.DeleteCloudFileCommand, Source={x:Reference _mainPage}}"
@@ -35,13 +37,42 @@
 				</Grid>
 			</DataTemplate>
 
+			<DataTemplate x:Key="ImageCloudFileTemplate" x:DataType="storage:CloudFile">
+				<Frame BackgroundColor="#FFFFFF" HasShadow="False">
+					<Grid ColumnDefinitions="*, Auto">
+						<StackLayout Orientation="Horizontal">
+							<Border StrokeShape="RoundRectangle 8">
+								<Image HeightRequest="48"
+								       Source="{Binding Url}"
+								       VerticalOptions="Center"
+								       WidthRequest="48" />
+							</Border>
+							<Label Margin="8"
+							       Text="{Binding Name}"
+							       TextColor="Black"
+							       VerticalOptions="Center" />
+						</StackLayout>
+						<StackLayout Grid.Column="1" Orientation="{OnIdiom Phone='Horizontal', Default='Vertical'}">
+							<Button Margin="0,0,16,0"
+							        Command="{Binding BindingContext.DeleteCloudFileCommand, Source={x:Reference _mainPage}}"
+							        CommandParameter="{Binding .}"
+							        Text="Delete" />
+							<Button Grid.Column="1"
+							        Command="{Binding BindingContext.OpenFileCommand, Source={x:Reference _mainPage}}"
+							        CommandParameter="{Binding .}"
+							        Text="Open" />
+						</StackLayout>
+
+					</Grid>
+				</Frame>
+			</DataTemplate>
 		</Grid.Resources>
 		<tabView:SfTabView x:Name="tabView" SelectedIndex="{Binding SelectedIndex}">
 			<tabView:SfTabView.Items>
 				<tabView:SfTabItem Header="Images">
 					<tabView:SfTabItem.Content>
 						<Grid>
-							<CollectionView ItemTemplate="{StaticResource CloudFileTemplate}" ItemsSource="{Binding Images}" />
+							<CollectionView ItemTemplate="{StaticResource ImageCloudFileTemplate}" ItemsSource="{Binding Images}" />
 						</Grid>
 					</tabView:SfTabItem.Content>
 				</tabView:SfTabItem>
