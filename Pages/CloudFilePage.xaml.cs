@@ -16,6 +16,6 @@ public partial class CloudFilePage : ContentPage
 	{
 		// better than using OnAppearing - which fires on different contexts esp. on Android (like show modals or foregrounding app)
 		base.OnNavigatedTo(args);
-		//await _viewModel.FetchFriendsAsync();
+		await _viewModel.InitializeAsync();
 	}
 }

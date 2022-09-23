@@ -16,6 +16,11 @@ namespace AzureBlobFilesApp.ViewModels
 
 		public void ApplyQueryAttributes(IDictionary<string, object> query)
 		{
+			// no need to check query parameters here, is CloudFile gets populated by QueryProperty after this method
+		}
+
+		public async Task InitializeAsync()
+		{
 			System.Diagnostics.Debug.WriteLine($"===================> File Name {CloudFile?.Name}");
 		}
 	}

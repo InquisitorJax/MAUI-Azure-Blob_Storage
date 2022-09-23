@@ -162,6 +162,9 @@ namespace AzureBlobFilesApp.ViewModels
 				{
 					ImageErrorMessage = uploadResult.ToString();
 				}
+
+				// refresh the image list (duplicate file name could have been used)
+				await LoadImagesAsync();
 			}
 			finally
 			{
@@ -193,6 +196,9 @@ namespace AzureBlobFilesApp.ViewModels
 				{
 					DocumentErrorMessage = uploadResult.ToString();
 				}
+
+				// refresh the document list (duplicate file name could have been used)
+				await LoadDocumentsAsync();
 			}
 			finally
 			{

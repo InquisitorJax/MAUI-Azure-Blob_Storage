@@ -14,26 +14,25 @@
 		<Grid.Resources>
 			<DataTemplate x:Key="CloudFileTemplate" x:DataType="storage:CloudFile">
 				<Grid Padding="8">
-				<Frame 
-				       BackgroundColor="#FFFFFF"
-				       HasShadow="False">
-					<Grid ColumnDefinitions="*, Auto">
-						<Label Margin="8"
-						       Text="{Binding Name}"
-						       TextColor="Black" />
-						<StackLayout Orientation="{OnIdiom Phone='Horizontal', Default='Vertical'}" Grid.Column="1">
-							<Button 
-						        Command="{Binding BindingContext.DeleteCloudFileCommand, Source={x:Reference _mainPage}}"
-						        CommandParameter="{Binding .}"
-						        Text="Delete" />
-							<Button Grid.Column="1"
-						        Text="Open" />
+					<Frame BackgroundColor="#FFFFFF" HasShadow="False">
+						<Grid ColumnDefinitions="*, Auto">
+							<Label Margin="8"
+							       Text="{Binding Name}"
+							       TextColor="Black" />
+							<StackLayout Grid.Column="1" Orientation="{OnIdiom Phone='Horizontal', Default='Vertical'}">
+								<Button Margin="0,0,16,0"
+								        Command="{Binding BindingContext.DeleteCloudFileCommand, Source={x:Reference _mainPage}}"
+								        CommandParameter="{Binding .}"
+								        Text="Delete" />
+								<Button Grid.Column="1"
+								        Command="{Binding BindingContext.OpenFileCommand, Source={x:Reference _mainPage}}"
+								        CommandParameter="{Binding .}"
+								        Text="Open" />
+							</StackLayout>
 
-					</StackLayout>
-						
-					</Grid>
-				</Frame>
-					</Grid>
+						</Grid>
+					</Frame>
+				</Grid>
 			</DataTemplate>
 
 		</Grid.Resources>

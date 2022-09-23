@@ -20,6 +20,9 @@ namespace AzureBlobFilesApp.Core
 			builder.Services.AddSingleton<MainPage>();
 			builder.Services.AddTransient<MainViewModel>();
 
+			builder.Services.AddTransient<CloudFilePage>();
+			builder.Services.AddTransient<CloudFileViewModel>();
+
 			return builder;
 		}
 
