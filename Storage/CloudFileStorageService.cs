@@ -169,11 +169,15 @@ namespace AzureBlobFilesApp.Storage
 			return result;
 		}
 
+		// https://<storage_account_name>.blob.core.windows.net/<container_name>/<blob_name>
+		const string FileUrlFormat = "https://{0}.blob.core.windows.net/{1}/{2}";
+
 		private async Task<CloudFilesResult> ListBlobsAsync(string containerName, CloudFileType fileType)
 		{
 			var result = new CloudFilesResult();
 			try
 			{
+				
 				var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
 
 				var blobItems = containerClient.GetBlobsAsync();
@@ -184,8 +188,8 @@ namespace AzureBlobFilesApp.Storage
 					{
 						Name = blobItem.Name,
 						Size = blobItem.Properties.ContentLength ?? 0,
-						FileType = fileType
-						//Url = blobItem.ur
+						FileType = fileType,
+						Url = string.Format(FileUrlFormat, containerClient.AccountName, containerName, blobItem.Name)
 					};
 					result.Files.Add(cloudFile);
 				}
