@@ -2,9 +2,15 @@
 <ContentPage x:Class="AzureBlobFilesApp.Pages.CloudFilePage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:AzureBlobFilesApp.Converters"
+             xmlns:storage="clr-namespace:AzureBlobFilesApp.Storage"
              xmlns:viewmodels="clr-namespace:AzureBlobFilesApp.ViewModels"
              Title="CloudFilePage"
              x:DataType="viewmodels:CloudFileViewModel">
+	<ContentPage.Resources>
+		<converters:ByteArrayToImageSourceConverter x:Key="isc" />
+		<converters:BooleanToOppositeBooleanConverter x:Key="bob" />
+	</ContentPage.Resources>
 	<VerticalStackLayout Margin="16" Spacing="16">
 
 		<VerticalStackLayout>
@@ -15,8 +21,34 @@
 				       VerticalOptions="Center"
 				       WidthRequest="128" />
 			</Border>
-			<Label Margin="0,16,0,0" Text="Image From Downloaded Content" />
-			<!--  TODO  -->
+			<Label Margin="0,16,0,0" Text="Local image From Downloaded Content" />
+			<Grid HeightRequest="128" WidthRequest="128">
+				<Border HorizontalOptions="Center"
+				        IsVisible="{Binding IsBusy, Converter={StaticResource bob}}"
+				        StrokeShape="RoundRectangle 8">
+					<Image HeightRequest="128"
+					       Source="{Binding CloudFile.Content, Converter={StaticResource isc}}"
+					       VerticalOptions="Center"
+					       WidthRequest="128" />
+				</Border>
+
+				<ActivityIndicator HorizontalOptions="Center"
+				                   IsRunning="True"
+				                   IsVisible="{Binding IsBusy}"
+				                   VerticalOptions="Center" />
+			</Grid>
+			<VerticalStackLayout.Triggers>
+				<DataTrigger Binding="{Binding CloudFile.FileType}"
+				             TargetType="VerticalStackLayout"
+				             Value="{x:Static storage:CloudFileType.Image}">
+					<Setter Property="IsVisible" Value="True" />
+				</DataTrigger>
+				<DataTrigger Binding="{Binding CloudFile.FileType}"
+				             TargetType="VerticalStackLayout"
+				             Value="{x:Static storage:CloudFileType.Document}">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>
+			</VerticalStackLayout.Triggers>
 		</VerticalStackLayout>
 
 

@@ -49,6 +49,12 @@ namespace AzureBlobFilesApp.Storage
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
 			var result = await UploadBlobAsync(containerName, fileName, file);
+
+			if (result.IsValid())
+			{
+				result.File.FileType = fileType;
+			}
+
 			return result;
 		}
 
@@ -122,10 +128,17 @@ namespace AzureBlobFilesApp.Storage
 			return result;
 		}
 
-		public Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName)
+		public async Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName)
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
-			return DownloadBlobAsync(containerName, fileName);
+			var result = await DownloadBlobAsync(containerName, fileName);
+
+			if (result.IsValid())
+			{
+				result.File.FileType = fileType;
+			}
+
+			return result;
 		}
 
 		public Task<CloudFilesResult> ListFilesAsync(CloudFileType fileType)
