@@ -1,7 +1,6 @@
 ﻿using AzureBlobFilesApp.Extensions;
 using AzureBlobFilesApp.Pages;
 using AzureBlobFilesApp.Storage;
-using Bumptech.Glide.Signature;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;

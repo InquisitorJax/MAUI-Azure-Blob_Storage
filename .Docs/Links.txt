@@ -6,7 +6,7 @@ DotNet Podcast MAUI App: https://github.com/microsoft/dotnet-podcasts?WT.mc_id=f
 
 //TODO:
 - MAUI File Picker to pic image / pdf docs
-- upload to storage
-- fetch list of files
+- [DONE] upload to storage
+- [DONE] fetch list of files
 - open a specific file
-- delete from storage
+- [DONE] delete from storage

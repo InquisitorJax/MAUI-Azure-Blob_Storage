@@ -154,6 +154,7 @@ namespace AzureBlobFilesApp.Storage
 						Content = memoryStream.ToArray(),
 						Name = blobName,
 						LastModified = downloadInfo.Details.LastModified,
+						LastAccessed = downloadInfo.Details.LastAccessed,
 						Size = memoryStream.Length,
 						Url = blobClient.Uri.AbsoluteUri
 					};
@@ -189,6 +190,9 @@ namespace AzureBlobFilesApp.Storage
 						Name = blobItem.Name,
 						Size = blobItem.Properties.ContentLength ?? 0,
 						FileType = fileType,
+						CreatedOn = blobItem.Properties.CreatedOn,
+						LastAccessed = blobItem.Properties.LastAccessedOn,
+						LastModified = blobItem.Properties.LastModified,
 						Url = string.Format(FileUrlFormat, containerClient.AccountName, containerName, blobItem.Name)
 					};
 					result.Files.Add(cloudFile);
@@ -216,7 +220,11 @@ namespace AzureBlobFilesApp.Storage
 
 		public byte[] Content { get; set; }
 
-		public DateTimeOffset LastModified { get; set; }
+		public DateTimeOffset? LastModified { get; set; }
+
+		public DateTimeOffset? LastAccessed { get; set; }
+
+		public DateTimeOffset? CreatedOn { get; set; }
 
 		public CloudFileType FileType { get; set; }
 	}
