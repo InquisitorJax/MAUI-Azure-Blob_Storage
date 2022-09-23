@@ -35,9 +35,11 @@
 							        Command="{Binding BindingContext.DeleteCloudFileCommand, Source={x:Reference _mainPage}}"
 							        CommandParameter="{Binding .}"
 							        Text="Delete" />
+							<!--  TODO: Enable once syncfusion release their pdf viewer for MAUI  -->
 							<Button Grid.Column="1"
 							        Command="{Binding BindingContext.OpenFileCommand, Source={x:Reference _mainPage}}"
 							        CommandParameter="{Binding .}"
+							        IsEnabled="False"
 							        Text="Open" />
 						</StackLayout>
 
