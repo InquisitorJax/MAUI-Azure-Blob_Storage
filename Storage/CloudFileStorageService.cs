@@ -13,7 +13,8 @@ namespace AzureBlobFilesApp.Storage
 			IProgress<long> progressHandler = null,
 			CancellationToken cancellationToken = default);
 
-		Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName);
+		Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType,
+			string fileName);
 
 		Task<CloudFileDeleteResult> DeleteFileAsync(CloudFileType fileType, string fileName);
 
@@ -149,6 +150,8 @@ namespace AzureBlobFilesApp.Storage
 
 		private async Task<CloudFileResult> DownloadBlobAsync(string containerName, string blobName)
 		{
+
+			//TODO: add DownloadContentAsync with IProgress
 			var result = new CloudFileResult();
 			System.Diagnostics.Debug.WriteLine($"===================> Downloading blob {blobName}.");
 
