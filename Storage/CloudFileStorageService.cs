@@ -13,7 +13,9 @@ namespace AzureBlobFilesApp.Storage
 			IProgress<long> progressHandler = null,
 			CancellationToken cancellationToken = default);
 
-		Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName);
+		Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName,
+			IProgress<long> progressHandler = null,
+			CancellationToken cancellationToken = default);
 
 		Task<CloudFileDeleteResult> DeleteFileAsync(CloudFileType fileType, string fileName);
 
@@ -128,10 +130,21 @@ namespace AzureBlobFilesApp.Storage
 			return result;
 		}
 
-		public async Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName)
+		public async Task<CloudFileResult> DownloadFileAsync(CloudFileType fileType, string fileName,
+			IProgress<long> progressHandler = null,
+			CancellationToken cancellationToken = default)
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
-			var result = await DownloadBlobAsync(containerName, fileName);
+
+			CloudFileResult result;
+			if (progressHandler == null)
+			{
+				result = await DownloadBlobAsync(containerName, fileName);
+			}
+			else
+			{
+				result = await DownloadBlobContentAsync(containerName, fileName);
+			}
 
 			if (result.IsValid())
 			{
@@ -145,42 +158,6 @@ namespace AzureBlobFilesApp.Storage
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
 			return ListBlobsAsync(containerName, fileType);
-		}
-
-		private async Task<CloudFileResult> DownloadBlobAsync(string containerName, string blobName)
-		{
-			var result = new CloudFileResult();
-			System.Diagnostics.Debug.WriteLine($"===================> Downloading blob {blobName}.");
-
-			try
-			{
-				var blobClient = GetBlobClientForContainer(containerName, blobName);
-
-				BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync();
-
-				using (var memoryStream = new MemoryStream())
-				{
-					await downloadInfo.Content.CopyToAsync(memoryStream);
-					memoryStream.Position = 0;
-					result.File = new CloudFile
-					{
-						Content = memoryStream.ToArray(),
-						Name = blobName,
-						LastModified = downloadInfo.Details.LastModified,
-						LastAccessed = downloadInfo.Details.LastAccessed,
-						Size = memoryStream.Length,
-						Url = blobClient.Uri.AbsoluteUri
-					};
-				
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine($"===================> Could not download blob {blobName} :(");
-				result.Fail(ex.Message);
-			}
-
-			return result;
 		}
 
 		// https://<storage_account_name>.blob.core.windows.net/<container_name>/<blob_name>
@@ -216,6 +193,81 @@ namespace AzureBlobFilesApp.Storage
             catch (Exception ex)
 			{
 				System.Diagnostics.Debug.WriteLine($"===================> Could not list blobs for container {containerName} :(");
+				result.Fail(ex.Message);
+			}
+
+			return result;
+		}
+
+		private async Task<CloudFileResult> DownloadBlobAsync(string containerName, string blobName)
+		{
+			var result = new CloudFileResult();
+			System.Diagnostics.Debug.WriteLine($"===================> Downloading blob {blobName}.");
+
+			try
+			{
+				var blobClient = GetBlobClientForContainer(containerName, blobName);
+
+				BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync();
+
+				using (var memoryStream = new MemoryStream())
+				{
+					await downloadInfo.Content.CopyToAsync(memoryStream);
+					memoryStream.Position = 0;
+					result.File = new CloudFile
+					{
+						Content = memoryStream.ToArray(),
+						Name = blobName,
+						LastModified = downloadInfo.Details.LastModified,
+						LastAccessed = downloadInfo.Details.LastAccessed,
+						Size = memoryStream.Length,
+						Url = blobClient.Uri.AbsoluteUri
+					};
+
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine($"===================> Could not download blob {blobName} :(");
+				result.Fail(ex.Message);
+			}
+
+			return result;
+		}
+
+		private async Task<CloudFileResult> DownloadBlobContentAsync(string containerName, string blobName, IProgress<long> progressHandler = null, CancellationToken cancellationToken = default)
+		{
+			// alternatives:
+			// DownloadToAsync()
+			// DownloadStreamingAsync()
+
+			var result = new CloudFileResult();
+			System.Diagnostics.Debug.WriteLine($"===================> Downloading blob content {blobName}.");
+
+			try
+			{
+				var blobClient = GetBlobClientForContainer(containerName, blobName);
+
+				var request = new BlobRequestConditions()
+				{
+				};
+				BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync(request, progressHandler, cancellationToken: cancellationToken);
+
+				var cloudFile = new CloudFile
+				{
+					Content = downloadResult.Content.ToArray(),
+					Name = blobName,
+					LastModified = downloadResult.Details.LastModified,
+					LastAccessed = downloadResult.Details.LastAccessed,
+					Size = downloadResult.Details.ContentLength,
+					Url = blobClient.Uri.AbsoluteUri
+				};
+
+				result.File = cloudFile;
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine($"===================> Could not download blob content {blobName} :(");
 				result.Fail(ex.Message);
 			}
 
