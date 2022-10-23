@@ -13,3 +13,4 @@ Test Project for Azure Blob storage access
 - Add sample code for using a [SAS Token](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-dotnet-get-started#authorize-with-a-sas-token)
 - allow for simultaneous uploads amd download progress updates
 
+![image](https://user-images.githubusercontent.com/1822976/197385603-2ddddd6e-6414-4fd4-b69a-1c7b46686a4e.png)
