@@ -5,7 +5,7 @@ namespace AzureBlobFilesApp.ViewModels
 {
 	[QueryProperty(nameof(CloudFile), nameof(CloudFile))] // populated via object dictionary in navigation
 	[ObservableObject]
-	public partial class CloudFileViewModel : IQueryAttributable
+	public partial class CloudFileViewModel : IQueryAttributable, IProgress<long>
 	{
 		private readonly ICloudFileStorageService _storageService;
 
@@ -19,6 +19,9 @@ namespace AzureBlobFilesApp.ViewModels
 
 		[ObservableProperty]
 		private bool _isBusy;
+
+		[ObservableProperty]
+		private long _busyProgress;
 
 		public void ApplyQueryAttributes(IDictionary<string, object> query)
 		{
@@ -35,7 +38,7 @@ namespace AzureBlobFilesApp.ViewModels
 				try
 				{
 					// let's download the file to get the .Content property populated
-					var downloadedResult = await _storageService.DownloadFileAsync(CloudFile.FileType, CloudFile.Name);
+					var downloadedResult = await _storageService.DownloadFileAsync(CloudFile.FileType, CloudFile.Name, progressHandler: this);
 					if (downloadedResult.IsValid())
 					{
 						CloudFile = downloadedResult.File;
@@ -44,8 +47,14 @@ namespace AzureBlobFilesApp.ViewModels
 				finally
 				{
 					IsBusy = false;
+					BusyProgress = 0;
 				}
 			}
+		}
+
+		public void Report(long value)
+		{
+			BusyProgress = value;
 		}
 	}
 }

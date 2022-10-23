@@ -147,6 +147,7 @@ namespace AzureBlobFilesApp.ViewModels
 		{
 			IsBusy = true;
 			BusyMessage = "Adding Image...";
+			BusyProgress = 0;
 
 			try
 			{
@@ -173,6 +174,7 @@ namespace AzureBlobFilesApp.ViewModels
 			{
 				BusyMessage = String.Empty;
 				IsBusy = false;
+				BusyProgress = 0;
 			}
 
 		}
@@ -181,6 +183,7 @@ namespace AzureBlobFilesApp.ViewModels
 		{
 			IsBusy = true;
 			BusyMessage = "Adding Document...";
+			BusyProgress = 0;
 
 			try
 			{
@@ -207,6 +210,7 @@ namespace AzureBlobFilesApp.ViewModels
 			{
 				BusyMessage = String.Empty;
 				IsBusy = false;
+				BusyProgress = 0;
 			}
 		
 		}

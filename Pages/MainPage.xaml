@@ -146,7 +146,7 @@
 					       VerticalOptions="Center" />
 					<Label FontSize="18"
 					       IsVisible="{Binding BusyProgress, Converter={StaticResource nvc}, ConverterParameter='0'}"
-					       Text="{Binding BusyProgress, StringFormat='{0} %'}"
+					       Text="{Binding BusyProgress, StringFormat='{0} Kb'}"
 					       TextColor="DarkSlateGray"
 					       VerticalOptions="Center" />
 				</StackLayout>

@@ -10,6 +10,7 @@
 	<ContentPage.Resources>
 		<converters:ByteArrayToImageSourceConverter x:Key="isc" />
 		<converters:BooleanToOppositeBooleanConverter x:Key="bob" />
+		<converters:NumberValueToBooleanConverter x:Key="nvc" />
 	</ContentPage.Resources>
 	<VerticalStackLayout Margin="16" Spacing="16">
 
@@ -32,10 +33,18 @@
 					       WidthRequest="128" />
 				</Border>
 
-				<ActivityIndicator HorizontalOptions="Center"
-				                   IsRunning="True"
-				                   IsVisible="{Binding IsBusy}"
-				                   VerticalOptions="Center" />
+				<StackLayout Orientation="Horizontal">
+					<ActivityIndicator HorizontalOptions="Center"
+					                   IsRunning="True"
+					                   IsVisible="{Binding IsBusy}"
+					                   VerticalOptions="Center" />
+					<Label FontSize="18"
+					       IsVisible="{Binding BusyProgress, Converter={StaticResource nvc}, ConverterParameter='0'}"
+					       Text="{Binding BusyProgress, StringFormat='{0} Kb'}"
+					       TextColor="DarkSlateGray"
+					       VerticalOptions="Center" />
+
+				</StackLayout>
 			</Grid>
 			<VerticalStackLayout.Triggers>
 				<DataTrigger Binding="{Binding CloudFile.FileType}"
@@ -59,7 +68,7 @@
 
 		<VerticalStackLayout>
 			<Label Text="File Size" />
-			<Label Text="{Binding CloudFile.Size, StringFormat='{0} Kb'}" />
+			<Label Margin="8,0,0,0" Text="{Binding CloudFile.Size, StringFormat='{0} Kb'}" />
 		</VerticalStackLayout>
 
 	</VerticalStackLayout>
