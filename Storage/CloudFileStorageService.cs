@@ -201,8 +201,6 @@ namespace AzureBlobFilesApp.Storage
 
 		private async Task<CloudFileResult> DownloadBlobAsync(string containerName, string blobName)
 		{
-
-			//TODO: add DownloadContentAsync with IProgress
 			var result = new CloudFileResult();
 			System.Diagnostics.Debug.WriteLine($"===================> Downloading blob {blobName}.");
 
