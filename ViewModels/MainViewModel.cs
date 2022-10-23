@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 namespace AzureBlobFilesApp.ViewModels
 {
 	[ObservableObject]
-	public partial class MainViewModel
+	public partial class MainViewModel : IProgress<long>
 	{
 		private readonly ICloudFileStorageService _storageService;
 		private const string ImageResourceName = "IndieDads.png";
@@ -27,6 +27,12 @@ namespace AzureBlobFilesApp.ViewModels
 		private bool _isBusy;
 
 		[ObservableProperty]
+		private string _busyMessage;
+
+		[ObservableProperty]
+		private long _busyProgress;
+
+		[ObservableProperty]
 		private int _selectedIndex;
 
 		[ObservableProperty]
@@ -41,8 +47,6 @@ namespace AzureBlobFilesApp.ViewModels
 		[ObservableProperty]
 		private string _documentErrorMessage;
 
-		[ObservableProperty]
-		private string _busyMessage;
 
 		public async Task InitializeAsync()
 		{
@@ -151,7 +155,7 @@ namespace AzureBlobFilesApp.ViewModels
 
 				LoadImageResource();
 
-				var uploadResult = await _storageService.UploadFileAsync(CloudFileType.Image, fileName, _imageResource);
+				var uploadResult = await _storageService.UploadFileAsync(CloudFileType.Image, fileName, _imageResource, progressHandler: this);
 
 				if (uploadResult.IsValid())
 				{
@@ -185,7 +189,7 @@ namespace AzureBlobFilesApp.ViewModels
 
 				LoadDocumentResource();
 
-				var uploadResult = await _storageService.UploadFileAsync(CloudFileType.Document, fileName, _documentResource);
+				var uploadResult = await _storageService.UploadFileAsync(CloudFileType.Document, fileName, _documentResource, progressHandler: this);
 
 				if (uploadResult.IsValid())
 				{
@@ -226,5 +230,10 @@ namespace AzureBlobFilesApp.ViewModels
 			return _documentResource;
 		}
 
+		public void Report(long value)
+		{
+			System.Diagnostics.Debug.WriteLine($"===================> REPORTING PROGRESS {value}");
+			BusyProgress = value;
+		}
 	}
 }

@@ -50,7 +50,7 @@ namespace AzureBlobFilesApp.Storage
 			CancellationToken cancellationToken = default)
 		{
 			string containerName = fileType == CloudFileType.Image ? IMAGE_CONTAINER_NAME : DOCUMENT_CONTAINER_NAME;
-			var result = await UploadBlobAsync(containerName, fileName, file);
+			var result = await UploadBlobAsync(containerName, fileName, file, progressHandler, cancellationToken);
 
 			if (result.IsValid())
 			{
@@ -143,7 +143,7 @@ namespace AzureBlobFilesApp.Storage
 			}
 			else
 			{
-				result = await DownloadBlobContentAsync(containerName, fileName);
+				result = await DownloadBlobContentAsync(containerName, fileName, progressHandler, cancellationToken);
 			}
 
 			if (result.IsValid())
@@ -201,6 +201,8 @@ namespace AzureBlobFilesApp.Storage
 
 		private async Task<CloudFileResult> DownloadBlobAsync(string containerName, string blobName)
 		{
+
+			//TODO: add DownloadContentAsync with IProgress
 			var result = new CloudFileResult();
 			System.Diagnostics.Debug.WriteLine($"===================> Downloading blob {blobName}.");
 
